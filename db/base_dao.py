@@ -1,5 +1,5 @@
 from db.db import async_session_maker
-from sqlalchemy import select
+from sqlalchemy import select, insert
 
 
 class BaseDAO:
@@ -27,3 +27,11 @@ class BaseDAO:
             statement = select(cls.model).filter_by(**value)
             result = await session.execute(statement)
         return result.scalars().all()
+
+
+    @classmethod
+    async def insert_one(cls, **value):
+        async with async_session_maker() as session:
+            statement = insert(cls.model).values(**value)
+            await session.execute(statement)
+            await session.commit()

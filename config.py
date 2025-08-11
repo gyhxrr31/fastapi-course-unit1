@@ -7,4 +7,11 @@ class DBSettings(BaseSettings):
     model_config = SettingsConfigDict(env_file=".env.db", extra="ignore") #игнорируем лишние переменные
 
 
+class PWDSettings(BaseSettings):
+    PRIVATE_KEY: str
+    ALGORITHM: str
+
+    model_config = SettingsConfigDict(env_file=".env.pwd")
+
 DBConfig = DBSettings()
+PWDConfig = PWDSettings()

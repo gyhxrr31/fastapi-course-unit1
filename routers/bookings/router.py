@@ -1,5 +1,5 @@
 from fastapi import APIRouter
-from routers.bookings.dao import BookingsService
+from routers.bookings.dao import BookingsDAO
 from routers.bookings.schemas import SBooking
 
 router = APIRouter(
@@ -17,6 +17,6 @@ async def get_all() -> list[SBooking]:
     """
     Получить все бронирования
     """
-    return await BookingsService.select_all()
+    return await BookingsDAO.select_all()
 
 
