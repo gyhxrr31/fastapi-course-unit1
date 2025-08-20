@@ -3,7 +3,7 @@ from datetime import timedelta, datetime, UTC
 from jose import jwt
 from pydantic import EmailStr
 from routers.users.dao import UsersDAO
-from config import PWDConfig
+from config import pwdconfig
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
@@ -21,7 +21,7 @@ async def create_jwt_token(data:dict) -> str:
     expire_at = datetime.now(UTC) + timedelta(minutes=30)
     to_encode.update({"exp":expire_at})
     encoded_jwt = jwt.encode(
-        to_encode, PWDConfig.PRIVATE_KEY, PWDConfig.ALGORITHM
+        to_encode, pwdconfig.PRIVATE_KEY, pwdconfig.ALGORITHM
     )
     return encoded_jwt
 

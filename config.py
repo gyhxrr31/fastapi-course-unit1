@@ -13,5 +13,5 @@ class PWDSettings(BaseSettings):
 
     model_config = SettingsConfigDict(env_file=".env.pwd")
 
-DBConfig = DBSettings()
-PWDConfig = PWDSettings()
+dbconfig = DBSettings()
+pwdconfig = PWDSettings()
