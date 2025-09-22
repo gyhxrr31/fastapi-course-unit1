@@ -1,3 +1,5 @@
+from urllib.request import Request
+
 from fastapi import APIRouter, Response
 from routers.users.exceptions import email_already_registered_exception, creds_invalid_exception
 from routers.users.schemas import SUserAuth
@@ -36,3 +38,9 @@ async def login_user(
         secure=True
     )
     return access_token
+
+
+@router.delete("/logout")
+async def logout_user(response: Response):
+    response.delete_cookie("access_token")
+    return None
