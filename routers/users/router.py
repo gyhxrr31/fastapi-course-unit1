@@ -1,10 +1,10 @@
-from urllib.request import Request
-
-from fastapi import APIRouter, Response
+from fastapi import APIRouter, Response, Depends
 from routers.users.exceptions import email_already_registered_exception, creds_invalid_exception
 from routers.users.schemas import SUserAuth
+from models.users import Users
 from routers.users.dao import UsersDAO
 from routers.users.auth import get_password_hash, auth_user, create_jwt_token
+from routers.users.depends import get_user_from_sub
 
 
 router = APIRouter(
@@ -15,7 +15,7 @@ router = APIRouter(
 
 @router.post("/register")
 async def register_user(user_data: SUserAuth) -> dict:
-    existing_user = await UsersDAO.get_one_or_one(email=user_data.email)
+    existing_user = await UsersDAO.get_one_or_none(email=user_data.email)
     if existing_user:
         raise email_already_registered_exception
     hashed_password = await get_password_hash(user_data.password)
@@ -38,6 +38,11 @@ async def login_user(
         secure=True
     )
     return access_token
+
+
+@router.get("/me")
+async def about_current_user(current_user: Users = Depends(get_user_from_sub)):
+    return current_user
 
 
 @router.delete("/logout")
