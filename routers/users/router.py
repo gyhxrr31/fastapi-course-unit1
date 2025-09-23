@@ -1,15 +1,10 @@
 from fastapi import APIRouter, Depends
 from routers.users.depends import get_user_from_sub
-from models.users import Users
+from routers.users.schemas import SUser
 
-
-router = APIRouter(
-    prefix="/users",
-    tags=["Users"]
-)
+router = APIRouter()
 
 
 @router.get("/me")
-async def about_current_user(current_user: Users = Depends(get_user_from_sub)):
+async def about_current_user(current_user: SUser = Depends(get_user_from_sub)) -> SUser:
     return current_user
-

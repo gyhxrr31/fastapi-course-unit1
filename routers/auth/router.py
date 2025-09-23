@@ -5,10 +5,7 @@ from routers.auth.dao import AuthDAO
 from routers.auth.auth import get_password_hash, auth_user, create_jwt_token
 
 
-router = APIRouter(
-    prefix="/auth",
-    tags=["Auth"]
-)
+router = APIRouter()
 
 
 @router.post("/register")
@@ -39,6 +36,6 @@ async def login_user(
 
 
 @router.delete("/logout")
-async def logout_user(response: Response):
+async def logout_user(response: Response) -> None:
     response.delete_cookie("access_token")
     return None

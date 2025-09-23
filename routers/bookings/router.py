@@ -3,10 +3,7 @@ from routers.bookings.dao import BookingsDAO
 from routers.bookings.schemas import SBooking
 from routers.users.depends import get_user_from_sub
 
-router = APIRouter(
-    prefix="/bookings",
-    tags=["Бронирования"]
-)
+router = APIRouter()
 
 
 @router.post("/create")
