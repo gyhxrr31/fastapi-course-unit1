@@ -4,10 +4,21 @@ services:
     ports:
       - "5432:5432"
     volumes:
-      - /data:/var/lib/postgresql/data
+      - pgdata:/data:/var/lib/postgresql/data
     environment:
       POSTGRES_PASSWORD: ${DB_PWD}
       POSTGRES_USER: ${DB_USER}
       POSTGRES_DB: ${DB_NAME}
-    env_file:
-      - .env
+  fastapi_backend_service:
+      build:
+        context: .
+        dockerfile: Dockerfile
+      ports:
+        - "8001:8001"
+      volumes:
+        - .:/fastapi_backend_service
+      env_file:
+        - .env
+
+volumes:
+  pgdata:
