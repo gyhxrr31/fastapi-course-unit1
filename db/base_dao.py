@@ -14,7 +14,7 @@ class BaseDAO:
 
 
     @classmethod
-    async def get_one_or_one(cls, **value):
+    async def get_one_or_none(cls, **value):
         async with async_session_maker() as session:
             statement = select(cls.model).filter_by(**value)
             result = await session.execute(statement)
