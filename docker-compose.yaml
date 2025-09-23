@@ -4,7 +4,7 @@ services:
     ports:
       - "5432:5432"
     volumes:
-      - pgdata:/data:/var/lib/postgresql/data
+      - pgdata:/data/fastapi_course:/var/lib/postgresql/fastapi_course/data
     environment:
       POSTGRES_PASSWORD: ${DB_PWD}
       POSTGRES_USER: ${DB_USER}
