@@ -1,5 +1,5 @@
 from fastapi import APIRouter, Response, Depends
-from routers.auth.exceptions import email_already_registered_exception, creds_invalid_exception
+from routers.auth.exceptions import EmailAlreadyRegisteredException, CredsInvalidException
 from routers.auth.schemas import SUserAuth
 from routers.auth.dao import AuthDAO
 from routers.auth.auth import get_password_hash, auth_user, create_jwt_token
@@ -15,7 +15,7 @@ router = APIRouter(
 async def register_user(user_data: SUserAuth) -> dict:
     existing_user = await AuthDAO.get_one_or_none(email=user_data.email)
     if existing_user:
-        raise email_already_registered_exception
+        raise EmailAlreadyRegisteredException
     hashed_password = await get_password_hash(user_data.password)
     await AuthDAO.insert_one(email=user_data.email, hashed_password=hashed_password)
     return {"msg":"Ok"}
@@ -27,7 +27,7 @@ async def login_user(
         user_data: SUserAuth) -> str:
     user = await auth_user(user_data.email, user_data.password)
     if not user:
-        raise creds_invalid_exception
+        raise CredsInvalidException
     access_token = await create_jwt_token({"sub":str(user.id)})
     response.set_cookie(
         key="access_token",
