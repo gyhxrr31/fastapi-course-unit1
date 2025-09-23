@@ -2,7 +2,7 @@ from passlib.context import CryptContext
 from datetime import timedelta, datetime, UTC
 from jose import jwt
 from pydantic import EmailStr
-from routers.users.dao import UsersDAO
+from routers.auth.dao import AuthDAO
 from config import env_config
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
@@ -27,7 +27,7 @@ async def create_jwt_token(data: dict) -> str:
 
 
 async def auth_user(email: EmailStr, password: str):
-    user = await UsersDAO.get_one_or_none(email=email)
+    user = await AuthDAO.get_one_or_none(email=email)
     if not user:
         return None
 
