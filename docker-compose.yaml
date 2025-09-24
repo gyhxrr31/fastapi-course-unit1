@@ -4,7 +4,7 @@ services:
     ports:
       - "5432:5432"
     volumes:
-      - pgdata:/data/fastapi_course:/var/lib/postgresql/fastapi_course/data
+      - pgdata_fastapi_course:/var/lib/postgresql/data
     environment:
       POSTGRES_PASSWORD: ${DB_PWD}
       POSTGRES_USER: ${DB_USER}
@@ -21,4 +21,4 @@ services:
         - .env
 
 volumes:
-  pgdata:
+  pgdata_fastapi_course:

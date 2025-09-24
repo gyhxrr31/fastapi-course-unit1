@@ -19,9 +19,10 @@ INSERT INTO rooms (hotel_id, name, description, price, quantity, services, image
 (5, 'Номер полулюкс премиум (с завтраком)', 'Полулюкс - он и есть полулюкс, шик и блеск.', 8000, 7, '[]', 16),
 (6, 'Стандарт (типовой корпус)', 'Стандартный номер.', 8125, 45, '[]', 17);
 
+---Пароль string---
 INSERT INTO users (email, hashed_password, admin_role) VALUES
 ('fedor@moloko.ru', 'tut_budet_hashed_password_1', FALSE),
-('sharik@moloko.ru', 'tut_budet_hashed_password_2', FALSE);
+('sharik@moloko.ru', '$2b$12$fDwgJCwKTaKmr1kendr9KeyyF9To5ENFBtzhc.Wh0z9HMdW3ufNqS', FALSE);
 
 INSERT INTO bookings (room_id, user_id, date_from, date_to, price) VALUES
 (1, 1, '2023-06-15', '2023-06-30', 24500),
