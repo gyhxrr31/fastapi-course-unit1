@@ -1,23 +1,32 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
 <head>
-    <link href="/statics/css/main.css" rel="stylesheet" type="text/css">
     <meta charset="UTF-8">
-    <title>Набронировал</title>
+    <title>Отели</title>
+    <link href="{{ url_for('statics', path='css/main.css') }}" rel="stylesheet" type="text/css">
 </head>
 <body>
-<div>{% for hotel in hotels %}
-    <div class="main">
+<header>
+    <h1>Каталог отелей</h1>
+</header>
+
+<main class="container">
+    {% for hotel in hotels %}
+    <div class="card">
         <img src="{{ url_for('statics', path='images/' + hotel.image_id|string + '.webp') }}"
-             alt="Фото отеля" width="300">
-        <div>
-            <h1>{{hotel.name}}</h1>
-            <h1>Отель 5 звезд</h1>
-            <h4>Бесподобное местечко</h4>
-            <h1>{{hotel.location}}</h1>
+             alt="Фото отеля" class="hotel-image">
+        <div class="info">
+            <h2>{{ hotel.name }}</h2>
+            <p class="stars">⭐⭐⭐⭐⭐</p>
+            <p class="desc">Бесподобное местечко</p>
+            <p class="location">{{ hotel.location }}</p>
         </div>
     </div>
     {% endfor %}
-</div>
+</main>
+
+<footer>
+    <p>© 2025 Набронировал. Все права защищены.</p>
+</footer>
 </body>
 </html>

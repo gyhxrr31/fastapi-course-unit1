@@ -1,7 +1,73 @@
-.main {
-    display: flex;
+body {
+    margin: 0;
+    font-family: system-ui, sans-serif;
+    background-color: #f8f9fa;
+    color: #222;
 }
 
-div {
-    margin: 10px;
+header {
+    background: #2c3e50;
+    color: white;
+    padding: 20px;
+    text-align: center;
+}
+
+.container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+    padding: 30px;
+}
+
+.card {
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 3px 8px rgba(0,0,0,0.15);
+    overflow: hidden;
+    width: 320px;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 14px rgba(0,0,0,0.2);
+}
+
+.hotel-image {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+}
+
+.info {
+    padding: 15px;
+}
+
+.info h2 {
+    margin: 0 0 8px 0;
+}
+
+.stars {
+    color: gold;
+    margin: 4px 0;
+}
+
+.desc {
+    font-size: 14px;
+    color: #555;
+}
+
+.location {
+    font-weight: bold;
+    color: #007bff;
+    margin-top: 8px;
+}
+
+footer {
+    background: #2c3e50;
+    color: white;
+    text-align: center;
+    padding: 10px;
+    font-size: 14px;
 }
