@@ -6,6 +6,7 @@ class EnvConfig(BaseSettings):
     DB_URL_LOCAL: str
     PRIVATE_KEY: str
     ALGORITHM: str
+    ORIGINS: list
     model_config = SettingsConfigDict(env_file=".env", extra="ignore") #игнорируем лишние переменные
 
 
