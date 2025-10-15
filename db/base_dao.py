@@ -35,3 +35,22 @@ class BaseDAO:
             statement = insert(cls.model).values(**value)
             await session.execute(statement)
             await session.commit()
+
+
+    @classmethod
+    async def add_many(cls, **data):
+        async with async_session_maker() as session:
+            statement = cls.model(**data)
+            session.add(statement)
+            await session.commit()
+            return statement
+
+
+    @classmethod
+    async def delete(cls, model_id: int):
+        async with async_session_maker() as session:
+            instance = await cls.find_by_id(model_id)
+            if instance:
+                await session.delete(instance)
+                await session.commit()
+            return instance
