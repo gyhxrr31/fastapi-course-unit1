@@ -1,4 +1,4 @@
-FROM python:3.12-slim-bookworm
+FROM python:3.13-slim-bookworm
 
 # The installer requires curl (and certificates) to download the release archive
 RUN apt-get update && apt-get install -y --no-install-recommends curl ca-certificates
@@ -13,6 +13,11 @@ RUN sh /uv-installer.sh && rm /uv-installer.sh
 ENV PATH="/root/.local/bin/:$PATH"
 # Copy the project into the image
 ADD . /app
+COPY pyproject.toml poetry.lock* ./
+COPY tasks ./tasks
+COPY main.py ./
+COPY statics ./statics
+
 
 # Sync the project into a new environment, asserting the lockfile is up to date
 WORKDIR /app
