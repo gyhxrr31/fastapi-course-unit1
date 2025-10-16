@@ -1,14 +1,35 @@
 services:
   postgres:
-    image: postgres:16-alpine
+    container_name: postgres
+    image: postgres:18.0-alpine
     ports:
       - "5432:5432"
     volumes:
-      - pgdata_fastapi_course:/var/lib/postgresql/data
+      - pg_fastapi_course:/var/lib/postgresql/data
     environment:
       POSTGRES_PASSWORD: ${DB_PWD}
       POSTGRES_USER: ${DB_USER}
       POSTGRES_DB: ${DB_NAME}
+  redis_cache:
+    image: redis:latest
+    container_name: redis
+    mem_limit: 1g
+    cpus: 0.5
+    environment:
+      REDIS_PASSWORD: ${REDIS_PASSWORD}
+      REDIS_USER: ${REDIS_USER}
+    ports:
+      - "6379:6379"
+    volumes:
+      - ./redisdata:/data
+    healthcheck:
+      test: [ "CMD", "redis-cli", "--user", "default", "--pass", "${REDIS_PASSWORD}", "ping" ]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+    restart: unless-stopped
+    links:
+      - postgres
   fastapi_backend_service:
       build:
         context: .
@@ -16,9 +37,43 @@ services:
       ports:
         - "8001:8001"
       volumes:
-        - .:/fastapi_backend_service
-      env_file:
-        - .env
+        - .:/app
+        - ./statics:/app/statics
+  celery_worker:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: celery_worker
+    command: uv run celery -A tasks.celery_config worker --loglevel=info
+    env_file:
+      - .env
+    depends_on:
+      - redis_cache
+      - postgres
+      - fastapi_backend_service
+    volumes:
+      - .:/app
+      - ./statics:/app/statics
+    restart: unless-stopped
+  celery_beat:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: celery_beat
+    command: uv run celery -A tasks.celery_config beat --loglevel=info
+    env_file:
+      - .env
+    depends_on:
+      - redis_cache
+      - postgres
+      - fastapi_backend_service
+    volumes:
+      - .:/app
+      - ./statics:/app/statics
+    restart: unless-stopped
 
 volumes:
-  pgdata_fastapi_course:
+  pg_fastapi_course:
+    driver: local
+  redisdata:
+    driver: local
