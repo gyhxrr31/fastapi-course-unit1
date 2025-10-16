@@ -7,6 +7,7 @@ class EnvConfig(BaseSettings):
     PRIVATE_KEY: str
     ALGORITHM: str
     ORIGINS: list
+    REDIS_URL: str
     model_config = SettingsConfigDict(env_file=".env", extra="ignore") #игнорируем лишние переменные
 
 
