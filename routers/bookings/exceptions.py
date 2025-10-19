@@ -13,3 +13,7 @@ class BaseBookingExceptions(HTTPException):
 class CannotBookedException(BaseBookingExceptions):
     detail = "No rooms left"
 
+
+class NotFoundBookingException(BaseBookingExceptions):
+    detail = "No booking found"
+

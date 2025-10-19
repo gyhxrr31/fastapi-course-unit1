@@ -4,7 +4,8 @@ from models.bookings import Bookings
 from models.rooms import Rooms
 from sqlalchemy import select, or_, and_, func, insert, not_, delete
 from datetime import date
-from routers.bookings.exceptions import NotFoundBooking
+from routers.bookings.exceptions import  NotFoundBookingException
+
 
 class BookingsDAO(BaseDAO):
     model = Bookings
@@ -26,7 +27,7 @@ class BookingsDAO(BaseDAO):
             )
             result = await session.execute(statement)
             if not result.scalar():
-                raise NotFoundBooking
+                raise NotFoundBookingException
             await session.delete(result.scalar())
             await session.commit()
             return None
