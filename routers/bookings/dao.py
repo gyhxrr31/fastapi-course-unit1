@@ -2,13 +2,35 @@ from db.base_dao import BaseDAO
 from db.db import async_session_maker
 from models.bookings import Bookings
 from models.rooms import Rooms
-from sqlalchemy import select, or_, and_, func, insert, not_
+from sqlalchemy import select, or_, and_, func, insert, not_, delete
 from datetime import date
-
+from routers.bookings.exceptions import NotFoundBooking
 
 class BookingsDAO(BaseDAO):
     model = Bookings
     left_model = Rooms
+
+
+
+    @classmethod
+    async def delete_booking(
+            cls,
+            user_id: int,
+            room_id: int
+    ):
+
+        async with async_session_maker() as session:
+            statement = select(cls.model).where(
+                cls.model.user_id == user_id,
+                cls.model.room_id == room_id
+            )
+            result = await session.execute(statement)
+            if not result.scalar():
+                raise NotFoundBooking
+            await session.delete(result.scalar())
+            await session.commit()
+            return None
+
 
     @classmethod
     async def check_rooms_left(
@@ -54,7 +76,6 @@ class BookingsDAO(BaseDAO):
             date_to: date,
     ):
         rooms_left = await cls.check_rooms_left(
-            user_id,
             room_id,
             date_from,
             date_to
