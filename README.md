@@ -17,6 +17,7 @@
 1. Доделать фронтенд на `React`
 2. Припердолить мониторинг `Grafana/Zabbix/Prometheus`
 3. Подумать над minikube (k8s)
+4. Научиться работать с тестами `pytest`
 ## Запуск проекта
 ### Docker Compose
 1. Установите docker на устройство. (https://docs.docker.com/get-started/get-docker/)

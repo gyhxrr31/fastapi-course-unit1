@@ -1,7 +1,9 @@
 from pydantic_settings import BaseSettings, SettingsConfigDict
-
+from typing import Literal
 
 class EnvConfig(BaseSettings):
+    MODE: Literal["DEV", "TEST", "PROD"]
+    TEST_DB_URL: str
     DB_URL_CONTAINER: str
     DB_URL_LOCAL: str
     PRIVATE_KEY: str
