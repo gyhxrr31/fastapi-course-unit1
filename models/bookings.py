@@ -1,9 +1,7 @@
-from sqlalchemy.orm import Mapped, mapped_column
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 from sqlalchemy import Integer, Date, ForeignKey, Computed
 from datetime import date
-
 from models.hotels import Base
-
 
 
 class Bookings(Base):
@@ -17,3 +15,12 @@ class Bookings(Base):
     price: Mapped[int] = mapped_column(Integer, nullable=False)
     total_cost: Mapped[int] = mapped_column(Integer, Computed("(date_to - date_from) * price")) #Попробовать тут формулу "(total_cost * total_days)"
     total_days: Mapped[int] = mapped_column(Integer, Computed("(date_to - date_from)"))
+
+    user: Mapped["Users"] = relationship(
+        "Users",
+        back_populates="booking",
+        lazy="joined"
+    )
+
+    def __str__(self):
+        return f"Booking id: {self.id}"
