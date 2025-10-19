@@ -37,22 +37,20 @@ services:
       ports:
         - "8001:8001"
       volumes:
-        - .:/app
         - ./statics:/app/statics
+      container_name: backend
   celery_worker:
     build:
       context: .
       dockerfile: Dockerfile
     container_name: celery_worker
     command: uv run celery -A tasks.celery_config worker --loglevel=info
-    env_file:
-      - .env
     depends_on:
       - redis_cache
       - postgres
       - fastapi_backend_service
     volumes:
-      - .:/app
+      - uv_data:/app
       - ./statics:/app/statics
     restart: unless-stopped
   celery_beat:
@@ -68,12 +66,28 @@ services:
       - postgres
       - fastapi_backend_service
     volumes:
-      - .:/app
+      - uv_data:/app
       - ./statics:/app/statics
     restart: unless-stopped
+  flower:
+      image: mher/flower
+      container_name: flower
+      command: celery flower
+      working_dir: /data
+      ports:
+        - 5555:5555
+      environment:
+        CELERY_BROKER_URL: ${REDIS_URL}
+        CELERY_RESULT_BACKEND: ${REDIS_URL}
+      depends_on:
+        - celery_worker
+        - celery_beat
+        - postgres
+        - redis_cache
 
 volumes:
   pg_fastapi_course:
     driver: local
   redisdata:
     driver: local
+  uv_data:
